@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source cfgtools.sh
+
 CTRL_HOST_IP="$1"
 INFRA_GW="$2"
 INFRA_MASK="$3"
