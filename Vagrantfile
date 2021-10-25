@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "compute-node" do |subconfig|
         subconfig.vm.hostname = "compute-node"
         subconfig.vm.box = BOX_IMAGE
-        subconfig.vm.network :private_network, ip: COMP_IP
+        subconfig.vm.network :private_network, ip: COMP_HOST_IP
         subconfig.vm.network :private_network, ip: COMP_REPO_NET_IP
         subconfig.vm.provider "libvirt" do |libvirt|
             libvirt.driver = "kvm"
