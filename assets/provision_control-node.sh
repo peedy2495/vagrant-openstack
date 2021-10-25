@@ -1,5 +1,6 @@
 #!/bin/bash
 
+HOST_IP="$1"
 CTRL_HOST_IP="$1"
 INFRA_GW="$2"
 INFRA_MASK="$3"
@@ -26,6 +27,8 @@ main() {
   source /tmp/assets/neutron/neutron.sh
 
   source /tmp/assets/horizon/horizon.sh
+
+  source /tmp/assets/cinder/cinder.sh
 }
 
 main

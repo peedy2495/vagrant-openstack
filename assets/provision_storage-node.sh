@@ -7,7 +7,7 @@ INFRA_NTP="$3"
 main() {
   source /tmp/assets/credentials
   source /tmp/assets/fundamental/fundamental.sh
-  source /tmp/assets/nova-compute/nova-compute.sh
+  source /tmp/assets/cinder/cinder-node.sh
 }
 
 main

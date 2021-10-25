@@ -14,6 +14,8 @@ CTRL_VMS_NET_MASK = "255.255.255.0"
 CTRL_REPO_NET_IP = "192.168.122.200"
 COMP_HOST_IP = "130.220.13.51"
 COMP_REPO_NET_IP = "192.168.122.201"
+STOR_HOST_IP = "192.168.122.50"
+STOR_REPO_NET_IP = "192.168.122.202"
 
 Vagrant.configure("2") do |config|
     
@@ -54,11 +56,29 @@ Vagrant.configure("2") do |config|
         subconfig.vm.provider "libvirt" do |libvirt|
             libvirt.driver = "kvm"
             libvirt.memory = "4096"
-            libvirt.cpus = 4
+            libvirt.cpus = 8
         end
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_compute-node.sh" , :args => [CTRL_HOST_IP, INFRA_NTP]
+        subconfig.vm.provision :shell, :path => "assets/provision_compute-node.sh" , :args => [COMP_HOST_IP, CTRL_HOST_IP, INFRA_NTP]
+    end
+
+    end
+
+    config.vm.define "storage-node" do |subconfig|
+        subconfig.vm.hostname = "storge-node"
+        subconfig.vm.box = BOX_IMAGE
+        subconfig.vm.network :private_network, ip: STOR_HOST_IP
+        subconfig.vm.network :private_network, ip: STOR_REPO_NET_IP
+        subconfig.vm.provider "libvirt" do |libvirt|
+            libvirt.driver = "kvm"
+            libvirt.memory = "4096"
+            libvirt.cpus = 2
+        end
+
+        subconfig.vm.provision :reload
+        subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
+        subconfig.vm.provision :shell, :path => "assets/provision_storage-node.sh" , :args => [STOR_HOST_IP, CTRL_HOST_IP, INFRA_NTP]
     end
 end
