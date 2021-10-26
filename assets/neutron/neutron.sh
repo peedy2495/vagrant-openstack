@@ -1,4 +1,4 @@
-source /tmp/assets/cfgtools.sh
+source /tmp/assets/tbx_configs.sh
 
 ## install neutron
 
@@ -20,13 +20,11 @@ apt -y install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutr
 
 touch /etc/neutron/fwaas_driver.ini
 
-ReplVar CTRL_HOST_IP /tmp/assets/neutron/neutron.conf
-ReplVar SERVPWD /tmp/assets/neutron/neutron.conf
-ReplVar ADMPWD /tmp/assets/neutron/neutron.conf
+
+for var in CTRL_HOST_IP SERVPWD ADMPWD; do
+  ReplVar $var /tmp/assets/neutron/neutron.conf
+done
 install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/neutron.conf
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/neutron/neutron.conf
-#sed -i "s/SERVPWD/$SERVPWD/g" /etc/neutron/neutron.conf
-#sed -i "s/ADMPWD/$ADMPWD/g" /etc/neutron/neutron.conf
 
 
 install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/l3_agent.ini
@@ -36,31 +34,21 @@ install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/dh
 ReplVar CTRL_HOST_IP /tmp/assets/neutron/metadata_agent.ini
 ReplVar ADMPWD /tmp/assets/neutron/metadata_agent.ini
 install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/metadata_agent.ini
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/neutron/metadata_agent.ini
-#sed -i "s/ADMPWD/$ADMPWD/g" /etc/neutron/metadata_agent.ini
 
 install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/ml2_conf.ini
 
-ReplVar CTRL_HOST_IP /tmp/assets/neutron/linuxbridge_agent.ini
+ReplVar HOST_IP /tmp/assets/neutron/linuxbridge_agent.ini
 install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/linuxbridge_agent.ini
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
 
 PlaceBefore '\[api\]' '# Neutron usage' /etc/nova/nova.conf
 PlaceBefore '\[api\]' ' use_neutron = True' /etc/nova/nova.conf
 PlaceBefore '\[api\]' ' vif_plugging_is_fatal = True' /etc/nova/nova.conf
 PlaceBefore '\[api\]' ' vif_plugging_timeout = 300\n' /etc/nova/nova.conf
-#sed -i '/\[api\]/i # Neutron usage' /etc/nova/nova.conf
-#sed -i '/\[api\]/i use_neutron = True' /etc/nova/nova.conf
-#sed -i '/\[api\]/i vif_plugging_is_fatal = True' /etc/nova/nova.conf
-#sed -i '/\[api\]/i vif_plugging_timeout = 300\n' /etc/nova/nova.conf
 
-ReplVar CTRL_HOST_IP /etc/nova/nova.conf
-ReplVar SERVPWD /etc/nova/nova.conf
-ReplVar ADMPWD /etc/nova/nova.conf
+for var in CTRL_HOST_IP SERVPWD ADMPWD; do
+  ReplVar $var /tmp/assets/neutron/nova.conf.part.neutron
+done
 cat /tmp/assets/neutron/nova.conf.part.neutron >>/etc/nova/nova.conf
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/nova/nova.conf
-#sed -i "s/SERVPWD/$SERVPWD/g" /etc/nova/nova.conf
-#sed -i "s/ADMPWD/$ADMPWD/g" /etc/nova/nova.conf
 
 ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini 
 su -s /bin/bash neutron -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugin.ini upgrade head" 
@@ -87,8 +75,6 @@ ip link set ${NETDEV} up
 
 PlaceAfter '\[ml2_type_flat\]' 'flat_networks = physnet1\n' /etc/neutron/plugins/ml2/ml2_conf.ini
 PlaceAfter '\[linux_bridge\]' "physical_interface_mappings = physnet1:'${NETDEV}'\n" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
-#sed -i '/\[ml2_type_flat\]/aflat_networks = physnet1\n' /etc/neutron/plugins/ml2/ml2_conf.ini
-#sed -i '/\[linux_bridge\]/aphysical_interface_mappings = physnet1:'${NETDEV}'\n' /etc/neutron/plugins/ml2/linuxbridge_agent.ini
 
 systemctl restart neutron-linuxbridge-agent
 

@@ -9,7 +9,7 @@ auth_strategy = keystone
 transport_url = rabbit://openstack:ADMPWD@CTRL_HOST_IP
 enable_v3_api = True
 # Glance connection info
-glance_api_servers = http://CTRL_HOST_IP:9292
+glance_api_servers = http://GLANCE_IP:9292
 # OK with empty value now
 enabled_backends =
 

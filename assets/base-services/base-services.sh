@@ -2,8 +2,9 @@
 
 apt install -y mariadb-server
 
+# remove test databases and limit credentials
 mysql --user=root < /tmp/assets/fundamental/db-prep.sql
-# 2Do@end: ALTER USER 'root'@'localhost' IDENTIFIED BY '${STDPWD}';
+# 2Do, when provision finished: ALTER USER 'root'@'localhost' IDENTIFIED BY '${ADMPWD}';
 
 # install control-node
 apt -y install rabbitmq-server memcached python3-pymysql

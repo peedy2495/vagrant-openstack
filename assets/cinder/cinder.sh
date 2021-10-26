@@ -14,10 +14,10 @@ mysql --user=root < /tmp/assets/cinder/cinder.sql
 
 apt -y install cinder-api cinder-scheduler python3-cinderclient
 
-ReplVar HOST_IP /tmp/assets/cinder/cinder.conf.org
-ReplVar CTRL_HOST_IP /tmp/assets/cinder/cinder.conf.org
-ReplVar ADMPWD /tmp/assets/cinder/cinder.conf.org
-ReplVar SERVPWD /tmp/assets/cinder/cinder.conf.org
+for var in HOST_IP CTRL_HOST_IP ADMPWD SERVPWD GLANCE_IP; do
+    ReplVar $var /tmp/assets/cinder/cinder.conf.org
+done
+
 install -v -m 640 -g cinder -t /etc/cinder              /tmp/assets/cinder/cinder.conf.org
 
 su -s /bin/bash cinder -c "cinder-manage db sync"

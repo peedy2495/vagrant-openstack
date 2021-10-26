@@ -23,15 +23,15 @@ mysql --user=root < /tmp/assets/nova/nova.sql
 
 apt -y install nova-api nova-conductor nova-scheduler nova-novncproxy placement-api python3-novaclient 
 
+for var in CTRL_HOST_IP SERVPWD ADMPWD; do
+  ReplVar $var /tmp/assets/nova/nova.conf
+done
 install -v -m 640 -g nova -t /etc/nova /tmp/assets/nova/nova.conf
-sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/nova/nova.conf
-sed -i "s/SERVPWD/$SERVPWD/g" /etc/nova/nova.conf
-sed -i "s/ADMPWD/$ADMPWD/g" /etc/nova/nova.conf
 
+for var in CTRL_HOST_IP SERVPWD ADMPWD; do
+  ReplVar $var /tmp/assets/nova/placement.conf
+done
 install -v -m 640 -g placement -t /etc/placement /tmp/assets/nova/placement.conf
-sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/placement/placement.conf
-sed -i "s/SERVPWD/$SERVPWD/g" /etc/placement/placement.conf
-sed -i "s/ADMPWD/$ADMPWD/g" /etc/placement/placement.conf
 
 su -s /bin/bash placement -c "placement-manage db sync" 
 su -s /bin/bash nova -c "nova-manage api_db sync"

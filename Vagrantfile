@@ -17,6 +17,9 @@ COMP_REPO_NET_IP = "192.168.122.201"
 STOR_HOST_IP = "192.168.122.50"
 STOR_REPO_NET_IP = "192.168.122.202"
 
+#to be able to deploy glance to any node
+GLANCE_IP = CTRL_HOST_IP
+
 Vagrant.configure("2") do |config|
     
     #Disabling the default /vagrant share
@@ -45,7 +48,7 @@ Vagrant.configure("2") do |config|
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_control-node.sh" , :args => [CTRL_HOST_IP, INFRA_GW, INFRA_MASK, INFRA_DNS, INFRA_DHCP_START, INFRA_DHCP_END, INFRA_NTP]
+        subconfig.vm.provision :shell, :path => "assets/provision_control-node.sh" , :args => [CTRL_HOST_IP, INFRA_GW, INFRA_MASK, INFRA_DNS, INFRA_DHCP_START, INFRA_DHCP_END, INFRA_NTP, GLANCE_IP]
     end
 
     config.vm.define "compute-node" do |subconfig|
@@ -79,6 +82,6 @@ Vagrant.configure("2") do |config|
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_storage-node.sh" , :args => [STOR_HOST_IP, CTRL_HOST_IP, INFRA_NTP]
+        subconfig.vm.provision :shell, :path => "assets/provision_storage-node.sh" , :args => [STOR_HOST_IP, CTRL_HOST_IP, INFRA_NTP, GLANCE_IP]
     end
 end

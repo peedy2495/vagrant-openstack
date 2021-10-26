@@ -1,5 +1,3 @@
-source /tmp/assets/cfgtools.sh
-
 ## install keystone
 sed -i "s/ADMPWD/$ADMPWD/g" /tmp/assets/keystone/keystone.sql
 mysql --user=root < /tmp/assets/keystone/keystone.sql
