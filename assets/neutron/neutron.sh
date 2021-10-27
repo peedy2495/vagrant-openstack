@@ -24,22 +24,22 @@ touch /etc/neutron/fwaas_driver.ini
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var /tmp/assets/neutron/neutron.conf
 done
-install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/neutron.conf
+install -v -b -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/neutron.conf
 
 
-install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/l3_agent.ini
+install -v -b -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/l3_agent.ini
 
-install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/dhcp_agent.ini
+install -v -b -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/dhcp_agent.ini
 
 ReplVar CTRL_HOST_IP /tmp/assets/neutron/metadata_agent.ini
 ReplVar ADMPWD /tmp/assets/neutron/metadata_agent.ini
-install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/metadata_agent.ini
+install -v -b -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/metadata_agent.ini
 
-install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/ml2_conf.ini
+install -v -b -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/ml2_conf.ini
 
 ReplVar HOST_IP /tmp/assets/neutron/linuxbridge_agent.ini
 ReplVar NETDEV /tmp/assets/neutron/linuxbridge_agent.ini
-install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/linuxbridge_agent.ini
+install -v -b -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/linuxbridge_agent.ini
 
 PlaceBefore '\[api\]' '# Neutron usage' /etc/nova/nova.conf
 PlaceBefore '\[api\]' ' use_neutron = True' /etc/nova/nova.conf
@@ -54,7 +54,7 @@ cat /tmp/assets/neutron/nova.conf.part.neutron >>/etc/nova/nova.conf
 ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini 
 su -s /bin/bash neutron -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugin.ini upgrade head" 
 
-install -v -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/dnsmasq-neutron.conf
+install -v -b -m 640 -g neutron -t /etc/neutron              /tmp/assets/neutron/dnsmasq-neutron.conf
 
 for service in server l3-agent dhcp-agent metadata-agent linuxbridge-agent; do
   systemctl restart neutron-$service
@@ -82,36 +82,17 @@ PlaceAfter '\[linux_bridge\]' "physical_interface_mappings = physnet1:'${NETDEV}
 
 systemctl restart neutron-linuxbridge-agent
 
-#create virtual network
-
-projectID=$(openstack project list | grep service | awk '{print $2}')
-
-openstack network create --project $projectID \
-  --share \
-  --provider-network-type flat \
-  --provider-physical-network physnet1 sharednet1
-
-INFRA_NET=$(echo $INFRA_GW | cut -d"." -f1-3).0
-
-openstack subnet create subnet1 \
-  --network sharednet1 \
-  --project $projectID \
-  --subnet-range $INFRA_NET/$INFRA_MASK \
-  --allocation-pool start=$INFRA_DCHP_START,end=$INFRA_DHCP_END \
-  --gateway $INFRA_GW --dns-nameserver $INFRA_DNS 
-
-
 openstack router create router01
 
 # create internal network
 openstack network create private --provider-network-type vxlan
 
 # create subnet for internal network
-openstack subnet create private-subnet
+openstack subnet create private-subnet \
   --network private \
   --subnet-range 192.168.100.0/24 \
   --gateway 192.168.100.1 \
-  --dns-nameserver 10.0.0.10
+  --dns-nameserver $INFRA_DNS
 
 # set subnet to the router above
 openstack router add subnet router01 private-subnet
@@ -123,16 +104,13 @@ openstack network create \
   --external public
 
 # create subnet for external network
+INFRA_NET=$(echo $INFRA_GW | cut -d"." -f1-3).0
 openstack subnet create public-subnet \
   --network public \
-  --subnet-range 10.0.0.0/24 \
-  --allocation-pool start=10.0.0.200,end=10.0.0.254 \
-  --gateway 10.0.0.1 \
-  --dns-nameserver 10.0.0.10 \
+  --subnet-range "$INFRA_NET"/"$INFRA_MASK" \
+  --allocation-pool start="$INFRA_DHCP_START",end="$INFRA_DHCP_END" \
+  --gateway "$INFRA_GW" \
+  --dns-nameserver "$INFRA_DNS" \
   --no-dhcp
 
 openstack router set router01 --external-gateway public
-
-netID=$(openstack network list | grep private | awk '{ print $2 }')
-prjID=$(openstack project list | grep hiroshima | awk '{ print $2 }')
-openstack network rbac create --target-project $prjID --type network --action access_as_shared $netID

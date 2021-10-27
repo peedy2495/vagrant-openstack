@@ -7,6 +7,7 @@ WaitForHost() {
     PORT="${2:-80}"
     PROTO="${3:-tcp}"
     while ! echo -n > /dev/$PROTO/$HOST/$PORT; do
+        echo "Waiting for $HOST:$PORT proto $PROTO"
         sleep 10
     done
 } 2>/dev/null

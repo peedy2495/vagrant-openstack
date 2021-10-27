@@ -26,12 +26,12 @@ apt -y install nova-api nova-conductor nova-scheduler nova-novncproxy placement-
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var /tmp/assets/nova/nova.conf
 done
-install -v -m 640 -g nova -t /etc/nova /tmp/assets/nova/nova.conf
+install -v -b -m 640 -g nova -t /etc/nova /tmp/assets/nova/nova.conf
 
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var /tmp/assets/nova/placement.conf
 done
-install -v -m 640 -g placement -t /etc/placement /tmp/assets/nova/placement.conf
+install -v -b -m 640 -g placement -t /etc/placement /tmp/assets/nova/placement.conf
 
 su -s /bin/bash placement -c "placement-manage db sync" 
 su -s /bin/bash nova -c "nova-manage api_db sync"

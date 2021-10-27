@@ -14,8 +14,8 @@ rabbitmqctl add_user openstack ${ADMPWD}
 rabbitmqctl set_permissions openstack ".*" ".*" ".*"
 
 # deploy configs preserving destinationfile attributes
-install -v -m 640 -t /etc /tmp/assets/base-services/memcached.conf
-install -v -m 640 -t /etc/mysql/mariadb.conf.d /tmp/assets/base-services/50-server.cnf
+install -v -b -m 640 -t /etc /tmp/assets/base-services/memcached.conf
+install -v -b -m 640 -t /etc/mysql/mariadb.conf.d /tmp/assets/base-services/50-server.cnf
 
 # make changes working
 systemctl restart mariadb rabbitmq-server memcached
