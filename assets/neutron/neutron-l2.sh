@@ -12,7 +12,9 @@ install -v -m 640 -g neutron -T /etc/neutron/neutron.conf /tmp/assets/neutron/ne
 install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/ml2_conf.ini
 
 ReplVar HOST_IP /tmp/assets/neutron/linuxbridge_agent.ini
+KeyDisable physical_interface_mappings /tmp/assets/neutron/linuxbridge_agent.ini
 install -v -m 640 -g neutron -t /etc/neutron/plugins/ml2  /tmp/assets/neutron/linuxbridge_agent.ini
+
 
 PlaceBefore '\[api\]' '# Neutron usage' /etc/nova/nova.conf
 PlaceBefore '\[api\]' ' use_neutron = True' /etc/nova/nova.conf
