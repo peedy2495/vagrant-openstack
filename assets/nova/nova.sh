@@ -23,7 +23,7 @@ mysql --user=root < /tmp/assets/nova/nova.sql
 
 apt -y install nova-api nova-conductor nova-scheduler nova-novncproxy placement-api python3-novaclient 
 
-for var in CTRL_HOST_IP SERVPWD ADMPWD; do
+for var in CTRL_HOST_IP SERVPWD ADMPWD GLANCE_IP; do
   ReplVar $var /tmp/assets/nova/nova.conf
 done
 install -v -b -m 640 -g nova -t /etc/nova /tmp/assets/nova/nova.conf

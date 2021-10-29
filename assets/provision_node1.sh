@@ -1,9 +1,11 @@
 #!/bin/bash
 
-HOST_IP="$1"
-CTRL_HOST_IP="$2"
-INFRA_NTP="$3"
-GLANCE_IP="$4"
+#load static variables 
+source /tmp/assets/global.rb
+#load aggregated variables
+source /tmp/assets/global.sh
+
+HOST_IP=$(hostname -I | cut -d: -f2 | awk '{print $2}')
 
 # include toolboxes(functions)
 source /tmp/assets/tbx_configs.sh
@@ -15,10 +17,13 @@ source /tmp/assets/credentials
 # prepare OpenStack repo and configure NTP
 source /tmp/assets/fundamental/fundamental.sh
 
-# migrate into neutron networking
-source /tmp/assets/neutron/neutron-l2.sh
+# nova rollout: compute
+source /tmp/assets/nova-compute/nova-compute.sh
 
 # cinder, prepare physical devices and rollout: volume
 # IMPORTANT! define physical devices in a mapfile called [hostname].map in ./assets/cinder/mappings
 # define only devicenames without path
-source /tmp/assets/cinder/cinder-node.sh
+source /tmp/assets/cinder/cinder-volume.sh
+
+# swift rollout: proxy
+source /tmp/assets/swift/swift-proxy.sh

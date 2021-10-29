@@ -26,7 +26,7 @@ fi
 vgcreate cinder-volumes $pvs
 
 # wait for cinder api
-WaitForHost $CTRL_HOST_IP 8776
+WaitForHost $CTRL_HOST_IP 8776 tcp 'cinder-api@'
 
 apt -y install cinder-volume python3-mysqldb
 

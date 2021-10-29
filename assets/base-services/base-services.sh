@@ -6,7 +6,7 @@ apt install -y mariadb-server
 mysql --user=root < /tmp/assets/fundamental/db-prep.sql
 # 2Do, when provision finished: ALTER USER 'root'@'localhost' IDENTIFIED BY '${ADMPWD}';
 
-# install control-node
+# install node0
 apt -y install rabbitmq-server memcached python3-pymysql
 
 # configure rabbitmq

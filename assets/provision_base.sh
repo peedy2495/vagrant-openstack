@@ -1,7 +1,9 @@
 #!/bin/bash
 
-REPO_IP="$1"
-REPO_PORT="$2"
+#load static variables 
+source /tmp/assets/global.rb
+#load aggregated variables
+source /tmp/assets/global.sh
 
 # Use local Nexus apt-proxy
 cp /tmp/assets/base/sources.list /etc/apt/sources.list

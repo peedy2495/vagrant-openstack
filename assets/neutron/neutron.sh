@@ -13,7 +13,7 @@ openstack endpoint create --region RegionOne network admin http://$controller:96
 
 # neutron: add user and database
 
-sed -i "s/ADMPWD/$ADMPWD/g" /tmp/assets/neutron/neutron.sql
+ReplVar ADMPWD /tmp/assets/neutron/neutron.sql
 mysql --user=root < /tmp/assets/neutron/neutron.sql
 
 apt -y install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python3-neutronclient
@@ -66,7 +66,7 @@ systemctl restart nova-api nova-compute
 
 # prepare neutron networking
 
-echo <<EOF >>/etc/systemd/network/${NETDEV}.network
+tee -a /etc/systemd/network/${NETDEV}.network >/dev/null <<EOF 
 [Match]
 Name=${NETDEV}
 

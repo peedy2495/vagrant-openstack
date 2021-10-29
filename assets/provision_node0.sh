@@ -1,14 +1,13 @@
 #!/bin/bash
 
-HOST_IP="$1"
-CTRL_HOST_IP="$1"
-INFRA_GW="$2"
-INFRA_MASK="$3"
-INFRA_DNS="$4"
-INFRA_DHCP_START="$5"
-INFRA_DHCP_END="$6"
-INFRA_NTP="$7"
-GLANCE_IP="$8"
+## This host will be mainly prepared as control-node
+
+#load static variables 
+source /tmp/assets/global.rb
+#load aggregated variables
+source /tmp/assets/global.sh
+
+HOST_IP=$(hostname -I | cut -d: -f2 | awk '{print $2}')
 
 # include toolboxes(functions)
 source /tmp/assets/tbx_configs.sh
@@ -26,10 +25,14 @@ source /tmp/assets/base-services/base-services.sh
 # keystone rollout
 source /tmp/assets/keystone/keystone.sh
 
-# glance rollout: server
+# glance prepare service
 # for development or productive environments, it's recommended to save images in a separate partition.
 # take a look for filesystem_store_datadir in glance.api.conf
 source /tmp/assets/glance/glance.sh
+
+# glance rollout: api
+IMGDEV='/dev/vdj'
+source /tmp/assets/glance/glance-service.sh
 
 # nova rollout: api, conductor, scheduler, novncproxy, compute, compute-kvm
 source /tmp/assets/nova/nova.sh
@@ -43,3 +46,16 @@ source /tmp/assets/horizon/horizon.sh
 
 # cinder rollout: api, scheduler
 source /tmp/assets/cinder/cinder.sh
+
+# heat prepare service
+source /tmp/assets/heat/heat-prep.sh
+
+# heat rollout: api engine
+# separated from prep to be able to choose another host
+source /tmp/assets/heat/heat.sh
+
+# barbican rollout: api
+source /tmp/assets/barbican/barbican.sh
+
+# swift prepare service
+source /tmp/assets/swift/swift-prep.sh

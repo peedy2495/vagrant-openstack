@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# wait for nova api
+WaitForHost $CTRL_HOST_IP 8774 tcp 'nova-api@'
+
 openstack user create --domain default --project service --password $SERVPWD cinder
 openstack role add --project service --user cinder admin 
 openstack service create --name cinderv3 --description "OpenStack Block Storage" volumev3
