@@ -1,5 +1,5 @@
 # vagrant-openstack
-Vagrant deployment of OpenStack environment 
+Vagrant deployment of an OpenStack environment 
 
 ## !!! IMPORTANT - UNDER CONSTRUCTION !!!
 
