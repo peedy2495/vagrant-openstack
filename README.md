@@ -7,7 +7,7 @@ This deployment is based on
 https://www.server-world.info/en/note?os=Ubuntu_20.04&p=openstack_xena  
 Refer this link for usage and testing beside official OpenStack documentation.
 
-
+Repository-sources will be configured to pull all required packages from a cached nexus-proxy 
 
 Overview of Services:
 
