@@ -35,6 +35,6 @@ KeyEnable() {
 # Set value of a key separated with '=' within a configfile;
 # KeySet [key] [value] [filepath]
 KeySet() {
-    ConfigEnable $1 $3
+    KeyEnable $1 $3
     sed -i "/^$1/s/\(.[^=]*\)\([ \t]*=[ \t]*\)\(.[^=]*\)/\1\2$2/" $3
 }

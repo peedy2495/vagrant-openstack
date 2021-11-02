@@ -27,3 +27,7 @@ source /tmp/assets/cinder/cinder-volume.sh
 
 # swift rollout: proxy
 source /tmp/assets/swift/swift-proxy.sh
+
+# swift volume rollout: account, container, object
+STOR_DEV='/dev/vdf'
+source /tmp/assets/swift/swift-storage.sh

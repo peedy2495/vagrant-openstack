@@ -10,12 +10,52 @@ mkdir -p /srv/node/device
 mount -o noatime,nodiratime $STOR_DEV /srv/node/device
 chown -R swift /srv/node
 
-echo -e "\n$STOR_DEV               /srv/node/device       xfs     noatime,nodiratime 0 0" >>/etc/fstab
+echo -e "$STOR_DEV               /srv/node/device       xfs     noatime,nodiratime 0 0\n" >>/etc/fstab
 
 #Original doesn't make any sense
 #scp /etc/swift/*.gz $SWIFT_PROXY:/etc/swift/
-#scp $SWIFT_PROXY:/etc/swift/*.gz /etc/swift/
+scp -o StrictHostKeyChecking=no $SWIFT_PROXY:/etc/swift/*.gz /etc/swift/
 
-#chown swift /etc/swift/*.gz
+chown swift /etc/swift/*.gz
 
-### uncompleted! ... modify/deploy relevant configs
+install -v -b -m 640 -g swift -t /etc/swift     /tmp/assets/swift/swift.conf
+
+KeySet bind_ip '0.0.0.0' /etc/swift/object-server.conf
+KeySet bind_port '6000' /etc/swift/object-server.conf
+
+KeySet bind_ip '0.0.0.0' /etc/swift/container-server.conf
+KeySet bind_port '6001' /etc/swift/container-server.conf
+
+KeySet bind_ip '0.0.0.0' /etc/swift/account-server.conf
+KeySet bind_port '6002' /etc/swift/account-server.conf
+
+ReplVar HOST_IP /tmp/assets/swift/rsyncd.conf
+install -v -b -m 644 -g swift -t /etc           /tmp/assets/swift/rsyncd.conf
+
+KeySet RSYNC_ENABLE 'true' /etc/default/rsync
+
+systemctl restart rsync \
+    swift-account-auditor \
+    swift-account-replicator \
+    swift-account \
+    swift-container-auditor \
+    swift-container-replicator \
+    swift-container-updater \
+    swift-container \
+    swift-object-auditor \
+    swift-object-replicator \
+    swift-object-updater \
+    swift-object
+
+systemctl enable rsync \
+    swift-account-auditor \
+    swift-account-replicator \
+    swift-account \
+    swift-container-auditor \
+    swift-container-replicator \
+    swift-container-updater \
+    swift-container \
+    swift-object-auditor \
+    swift-object-replicator \
+    swift-object-updater \
+    swift-object

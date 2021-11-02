@@ -59,3 +59,7 @@ source /tmp/assets/barbican/barbican.sh
 
 # swift prepare service
 source /tmp/assets/swift/swift-prep.sh
+
+# swift volume rollout: account, container, object
+STOR_DEV='/dev/vdf'
+source /tmp/assets/swift/swift-storage.sh

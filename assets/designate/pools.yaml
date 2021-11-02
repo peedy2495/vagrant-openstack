@@ -1,0 +1,21 @@
+- name: default
+  description: Default Pool
+  attributes: {}
+  ns_records:
+    - hostname: network.srv.world.
+      priority: 1
+  nameservers:
+    - host: HOST_IP
+      port: 53
+  targets:
+    - type: bind9
+      description: BIND9 Server
+      masters:
+        - host: HOST_IP
+          port: 5354
+      options:
+        host: HOST_IP
+        port: 53
+        rndc_host: HOST_IP
+        rndc_port: 953
+        rndc_key_file: /etc/bind/designate.key

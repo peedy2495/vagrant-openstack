@@ -1,0 +1,17 @@
+options {
+        directory "/var/cache/bind";
+        listen-on port 53 { any; };
+        listen-on-v6 port 53 { none; };
+        # replace query range to your environment
+        allow-query     { localhost; INFRA_NET/24; };
+        allow-new-zones yes;
+        request-ixfr no;
+        recursion no;
+        dnssec-validation auto;
+        auth-nxdomain no;
+};
+include "/etc/bind/designate.key";
+controls {
+    inet 0.0.0.0 port 953
+    allow { localhost; } keys { "designate"; };
+};

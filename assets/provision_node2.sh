@@ -28,6 +28,6 @@ source /tmp/assets/neutron/neutron-l2.sh
 # define only devicenames without path
 source /tmp/assets/cinder/cinder-volume.sh
 
-# swift rollout: account, container, object
+# swift volume rollout: account, container, object
 STOR_DEV='/dev/vdf'
 source /tmp/assets/swift/swift-storage.sh
