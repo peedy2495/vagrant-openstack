@@ -29,5 +29,5 @@ source /tmp/assets/neutron/neutron-l2.sh
 source /tmp/assets/cinder/cinder-volume.sh
 
 # swift rollout: account, container, object
-$STOR_DEV='/dev/vdf'
+STOR_DEV='/dev/vdf'
 source /tmp/assets/swift/swift-storage.sh

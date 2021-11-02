@@ -3,8 +3,13 @@
 #load variables used by host and guest
 require_relative 'assets/global'
 
+
 Vagrant.configure("2") do |config|
     
+    # generate fresh ssh keys for passwordless vice versa guest accesses
+    puts `rm -f assets/base/id_rsa*`
+    puts `ssh-keygen -t rsa -P "" -f assets/base/id_rsa`
+
     #Disabling the default /vagrant share
     config.vm.synced_folder ".", "/vagrant", disabled: true
     

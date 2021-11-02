@@ -1,9 +1,13 @@
 #!/bin/bash
 
-#load static variables 
+# load static variables 
 source /tmp/assets/global.rb
-#load aggregated variables
+# load aggregated variables
 source /tmp/assets/global.sh
+
+# passwordless root access for guests vice versa
+cp /tmp/assets/base/id_rsa* /root
+KeyEnable PubkeyAuthentication /etc/ssh/sshd_config
 
 # Use local Nexus apt-proxy
 cp /tmp/assets/base/sources.list /etc/apt/sources.list
