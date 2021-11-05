@@ -3,7 +3,7 @@
 apt install -y mariadb-server
 
 # remove test databases and limit credentials
-mysql --user=root < $ASSETS/fundamental/db-prep.sql
+mysql --user=root < $ASSETS/base-services/db-prep.sql
 # 2Do, when provision finished: ALTER USER 'root'@'localhost' IDENTIFIED BY '${ADMPWD}';
 
 # install node0
