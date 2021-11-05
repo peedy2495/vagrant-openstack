@@ -3,6 +3,8 @@
 # get initial asset-path fom hypervisor
 ASSETS=$1
 
+mkdir /var/log/deployment
+
 # load static variables 
 source "$ASSETS/global.rb" > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 # load aggregated variables
