@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # wait for nova api
-WaitForHost $CTRL_HOST_IP 8774 tcp 'nova-api@'
+WaitForHost $CTRL_HOST_IP 5000 tcp 'keystone@'
 
 mkfs.ext4 $IMGDEV
 mount -t ext4 $IMGDEV /var/lib/glance/images

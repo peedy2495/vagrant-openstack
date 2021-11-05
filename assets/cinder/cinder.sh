@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # wait for nova api
-WaitForHost $CTRL_HOST_IP 8774 tcp 'nova-api@'
+WaitForHost $CTRL_HOST_IP 5000 tcp 'keystone@'
 
 openstack user create --domain default --project service --password $SERVPWD cinder
 openstack role add --project service --user cinder admin 

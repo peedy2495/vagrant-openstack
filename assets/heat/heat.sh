@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # wait for nova api
-WaitForHost $CTRL_HOST_IP 8774 tcp 'nova-api@'
+WaitForHost $CTRL_HOST_IP 5000 tcp 'keystone@'
 
 apt -y install heat-api heat-api-cfn heat-engine python3-heatclient python3-vitrageclient python3-zunclient 
 

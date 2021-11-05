@@ -3,7 +3,7 @@
 apt -y install swift swift-proxy python3-swiftclient python3-keystonemiddleware python3-memcache 
 
 # wait for nova api
-WaitForHost $CTRL_HOST_IP 8774 tcp 'nova-api@'
+WaitForHost $CTRL_HOST_IP 5000 tcp 'keystone@'
 
 for var in CTRL_HOST_IP SERVPWD; do
     ReplVar $var $ASSETS/swift/proxy-server.conf
