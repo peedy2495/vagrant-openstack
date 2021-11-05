@@ -35,7 +35,7 @@ source $ASSETS/glance/glance.sh
 
 # glance rollout: api
 IMGDEV='/dev/vdj'
-source $ASSETS/glance/glance-service.sh
+source $ASSETS/glance/glance-api.sh
 
 # nova rollout: api, conductor, scheduler, novncproxy, compute, compute-kvm
 source $ASSETS/nova/nova.sh
