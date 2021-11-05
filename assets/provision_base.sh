@@ -4,12 +4,12 @@
 ASSETS=$1
 
 # load static variables 
-source "$ASSETS/global.rb"
+source "$ASSETS/global.rb" > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 # load aggregated variables
-source "$ASSETS/global.sh"
+source "$ASSETS/global.sh" > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 
 # include toolbox for config manipulations
-source $ASSETS/gitrepos/shell-toolz/toolz_configs.sh
+source $ASSETS/gitrepos/shell-toolz/toolz_configs.sh > >(tee -a /var/log/deployment/toolz.log) 2> >(tee -a /var/log/deployment/toolz.err >&2)
 
 # Use local Nexus apt-proxy
 ReplVar REPO_IP $ASSETS/base/sources.list
@@ -17,10 +17,10 @@ ReplVar REPO_PORT $ASSETS/base/sources.list
 cp $ASSETS/base/sources.list /etc/apt/sources.list
 
 # Push system into latest
-apt update
-apt install -y avahi-daemon libnss-mdns
-apt -y upgrade
-apt -y dist-upgrade
+apt update  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
+apt install -y avahi-daemon libnss-mdns   > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
+apt -y basic  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
+apt -y dist-basic  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 
 # passwordless root access for guests vice versa
 mkdir /root/.ssh
