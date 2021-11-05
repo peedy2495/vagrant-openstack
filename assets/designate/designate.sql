@@ -1,4 +1,4 @@
-create database heat;
-grant all privileges on heat.* to heat@'localhost' identified by 'ADMPWD';
-grant all privileges on heat.* to heat@'%' identified by 'ADMPWD';
+create database designate;
+grant all privileges on designate.* to designate@'localhost' identified by 'ADMPWD';
+grant all privileges on designate.* to designate@'%' identified by 'ADMPWD';
 flush privileges;

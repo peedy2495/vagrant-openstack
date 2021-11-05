@@ -5,5 +5,6 @@ apt update
 apt upgrade -y
 
 # prepare some basics
-sed -i "\@#NTP@cNTP=$INFRA_NTP" /etc/systemd/timesyncd.conf
+#sed -i "\@#NTP@cNTP=$INFRA_NTP" /etc/systemd/timesyncd.conf
+KeySet NTP "$INFRA_NTP" /etc/systemd/timesyncd.conf
 systemctl restart systemd-timesyncd.service

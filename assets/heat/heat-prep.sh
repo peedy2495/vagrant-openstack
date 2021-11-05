@@ -22,6 +22,6 @@ openstack domain create --description "Stack projects and users" heat
 openstack user create --domain heat --password servicepassword heat_domain_admin
 openstack role add --domain heat --user heat_domain_admin admin
 
-ReplVar ADMPWD /tmp/assets/heat/heat.sql
-mysql --user=root < /tmp/assets/heat/heat.sql
+ReplVar ADMPWD $ASSETS/heat/heat.sql
+mysql --user=root < $ASSETS/heat/heat.sql
 

@@ -3,7 +3,7 @@ options {
         listen-on port 53 { any; };
         listen-on-v6 port 53 { none; };
         # replace query range to your environment
-        allow-query     { localhost; INFRA_NET/24; };
+        allow-query     { localhost; INFRA_NET/INFRA_MASK; };
         allow-new-zones yes;
         request-ixfr no;
         recursion no;

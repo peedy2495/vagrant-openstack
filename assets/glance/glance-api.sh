@@ -10,9 +10,9 @@ echo "/dev/$IMGDEV    /var/lib/glance/images          ext4      rw,relatime,node
 apt -y install glance 
 
 for var in CTRL_HOST_IP ADMPWD SERVPWD; do
-    ReplVar $var /tmp/assets/glance/glance-api.conf
+    ReplVar $var $ASSETS/glance/glance-api.conf
 done
-install -v -b -m 640 -g glance -t /etc/glance /tmp/assets/glance/glance-api.conf
+install -v -b -m 640 -g glance -t /etc/glance $ASSETS/glance/glance-api.conf
 
 su -s /bin/bash glance -c "glance-manage db_sync" 
 systemctl restart glance-api

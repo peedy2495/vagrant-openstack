@@ -10,5 +10,5 @@ openstack endpoint create --region RegionOne dns public http://$designate_api:90
 openstack endpoint create --region RegionOne dns internal http://$designate_api:9001/
 openstack endpoint create --region RegionOne dns admin http://$designate_api:9001/
 
-ReplVar ADMPWD /tmp/assets/designate/designate.sql
-mysql --user=root < /tmp/assets/designate/designate.sql
+ReplVar ADMPWD $ASSETS/designate/designate.sql
+mysql --user=root < $ASSETS/designate/designate.sql

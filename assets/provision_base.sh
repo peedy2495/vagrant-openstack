@@ -1,14 +1,20 @@
 #!/bin/bash
 
+# get initial asset-path fom hypervisor
+ASSETS=$1
+
 # load static variables 
-source /tmp/assets/global.rb
+source "$ASSETS/global.rb"
 # load aggregated variables
-source /tmp/assets/global.sh
+source "$ASSETS/global.sh"
+
+# include toolbox for config manipulations
+source $ASSETS/gitrepos/shell-toolz/toolz_configs.sh
 
 # Use local Nexus apt-proxy
-cp /tmp/assets/base/sources.list /etc/apt/sources.list
-sed -i "s/REPO_IP/$REPO_IP/g" /etc/apt/sources.list
-sed -i "s/REPO_PORT/$REPO_PORT/g" /etc/apt/sources.list
+ReplVar REPO_IP $ASSETS/base/sources.list
+ReplVar REPO_PORT $ASSETS/base/sources.list
+cp $ASSETS/base/sources.list /etc/apt/sources.list
 
 # Push system into latest
 apt update
@@ -18,7 +24,7 @@ apt -y dist-upgrade
 
 # passwordless root access for guests vice versa
 mkdir /root/.ssh
-cp /tmp/assets/base/id_rsa* /root/.ssh/
+cp $ASSETS/base/id_rsa* /root/.ssh/
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 KeyEnable PubkeyAuthentication /etc/ssh/sshd_config
 systemctl restart sshd

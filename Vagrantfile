@@ -3,19 +3,23 @@
 #load variables used by host and guest
 require_relative 'assets/global'
 
+# generate ssh keys for passwordless vice versa guest accesses
+puts `chmod +x assets/createSSHKeys.sh`
+puts `assets/createSSHKeys.sh`
+
+# get external dependencies
+puts `chmod +x assets/gitrepos.sh`
+puts `assets/gitrepos.sh`
 
 Vagrant.configure("2") do |config|
     
-    # generate fresh ssh keys for passwordless vice versa guest accesses
-    puts `rm -f assets/base/id_rsa*`
-    puts `ssh-keygen -t rsa -P "" -f assets/base/id_rsa`
 
     #Disabling the default /vagrant share
     config.vm.synced_folder ".", "/vagrant", disabled: true
     
     #Provide assets to every instance
     config.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-    config.vm.provision :shell, :path => "assets/provision_base.sh"
+    config.vm.provision :shell, :path => "assets/provision_base.sh", :args => [ASSETS]
     
     config.vm.define "node0" do |subconfig|
         subconfig.vm.hostname = "node0"
@@ -47,7 +51,7 @@ Vagrant.configure("2") do |config|
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_node0.sh"
+        subconfig.vm.provision :shell, :path => "assets/provision_node0.sh", :args => [ASSETS]
     end
 
     config.vm.define "node1" do |subconfig|
@@ -72,7 +76,7 @@ Vagrant.configure("2") do |config|
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_node1.sh"
+        subconfig.vm.provision :shell, :path => "assets/provision_node1.sh", :args => [ASSETS]
     end
 
     config.vm.define "node2" do |subconfig|
@@ -97,6 +101,6 @@ Vagrant.configure("2") do |config|
 
         subconfig.vm.provision :reload
         subconfig.vm.provision "file", source: "assets" , destination: "/tmp/assets"
-        subconfig.vm.provision :shell, :path => "assets/provision_node2.sh"
+        subconfig.vm.provision :shell, :path => "assets/provision_node2.sh", :args => [ASSETS]
     end
 end

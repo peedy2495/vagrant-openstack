@@ -18,20 +18,20 @@ openstack endpoint create --region RegionOne placement admin http://$controller:
 
 # nova: add user and database
 
-sed -i "s/ADMPWD/$ADMPWD/g" /tmp/assets/nova/nova.sql
-mysql --user=root < /tmp/assets/nova/nova.sql
+ReplVar ADMPWD $ASSETS/nova/nova.sql
+mysql --user=root < $ASSETS/nova/nova.sql
 
 apt -y install nova-api nova-conductor nova-scheduler nova-novncproxy placement-api python3-novaclient 
 
 for var in CTRL_HOST_IP SERVPWD ADMPWD GLANCE_IP; do
-  ReplVar $var /tmp/assets/nova/nova.conf
+  ReplVar $var $ASSETS/nova/nova.conf
 done
-install -v -b -m 640 -g nova -t /etc/nova /tmp/assets/nova/nova.conf
+install -v -b -m 640 -g nova -t /etc/nova $ASSETS/nova/nova.conf
 
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
-  ReplVar $var /tmp/assets/nova/placement.conf
+  ReplVar $var $ASSETS/nova/placement.conf
 done
-install -v -b -m 640 -g placement -t /etc/placement /tmp/assets/nova/placement.conf
+install -v -b -m 640 -g placement -t /etc/placement $ASSETS/nova/placement.conf
 
 su -s /bin/bash placement -c "placement-manage db sync" 
 su -s /bin/bash nova -c "nova-manage api_db sync"
@@ -44,9 +44,3 @@ systemctl restart apache2
 for service in api conductor scheduler; do
   systemctl restart nova-$service
 done
-
-apt -y install nova-compute nova-compute-kvm
-
-systemctl restart nova-compute nova-novncproxy
-
-su -s /bin/bash nova -c "nova-manage cell_v2 discover_hosts"

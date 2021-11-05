@@ -1,20 +1,16 @@
 ## install keystone
-sed -i "s/ADMPWD/$ADMPWD/g" /tmp/assets/keystone/keystone.sql
-mysql --user=root < /tmp/assets/keystone/keystone.sql
+ReplVar ADMPWD $ASSETS/keystone/keystone.sql
+mysql --user=root < $ASSETS/keystone/keystone.sql
 
 apt -y install keystone python3-openstackclient apache2 libapache2-mod-wsgi-py3 python3-oauth2client
 
-ReplVar CTRL_HOST_IP /tmp/assets/keystone/keystone.conf
-ReplVar ADMPWD /tmp/assets/keystone/keystone.conf
-install -v -b -m 640 -o keystone -g keystone -t /etc/keystone /tmp/assets/keystone/keystone.conf
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /etc/keystone/keystone.conf
-#sed -i "s/ADMPWD/$ADMPWD/g" /etc/keystone/keystone.conf
+ReplVar CTRL_HOST_IP $ASSETS/keystone/keystone.conf
+ReplVar ADMPWD $ASSETS/keystone/keystone.conf
+install -v -b -m 640 -o keystone -g keystone -t /etc/keystone $ASSETS/keystone/keystone.conf
 
-ReplVar CTRL_HOST_IP /tmp/assets/keystone/keystonerc
-ReplVar ADMPWD /tmp/assets/keystone/keystonerc
-install -v -b -m 600 -o root -g root -t /root /tmp/assets/keystone/keystonerc
-#sed -i "s/CTRL_HOST_IP/$CTRL_HOST_IP/g" /root/keystonerc
-#sed -i "s/ADMPWD/$ADMPWD/g" /root/keystonerc
+ReplVar CTRL_HOST_IP $ASSETS/keystone/keystonerc
+ReplVar ADMPWD $ASSETS/keystone/keystonerc
+install -v -b -m 600 -o root -g root -t /root $ASSETS/keystone/keystonerc
 
 echo "source ~/keystonerc " >> /root/.bashrc
 source /root/keystonerc 

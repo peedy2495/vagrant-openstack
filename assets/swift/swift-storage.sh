@@ -18,7 +18,7 @@ scp -o StrictHostKeyChecking=no $SWIFT_PROXY:/etc/swift/*.gz /etc/swift/
 
 chown swift /etc/swift/*.gz
 
-install -v -b -m 640 -g swift -t /etc/swift     /tmp/assets/swift/swift.conf
+install -v -b -m 640 -g swift -t /etc/swift     $ASSETS/swift/swift.conf
 
 KeySet bind_ip '0.0.0.0' /etc/swift/object-server.conf
 KeySet bind_port '6000' /etc/swift/object-server.conf
@@ -29,8 +29,8 @@ KeySet bind_port '6001' /etc/swift/container-server.conf
 KeySet bind_ip '0.0.0.0' /etc/swift/account-server.conf
 KeySet bind_port '6002' /etc/swift/account-server.conf
 
-ReplVar HOST_IP /tmp/assets/swift/rsyncd.conf
-install -v -b -m 644 -g swift -t /etc           /tmp/assets/swift/rsyncd.conf
+ReplVar HOST_IP $ASSETS/swift/rsyncd.conf
+install -v -b -m 644 -g swift -t /etc           $ASSETS/swift/rsyncd.conf
 
 KeySet RSYNC_ENABLE 'true' /etc/default/rsync
 

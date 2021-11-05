@@ -10,5 +10,5 @@ openstack endpoint create --region RegionOne image admin http://$controller:9292
 
 # glance: add user and database
 
-sed -i "s/ADMPWD/$ADMPWD/g" /tmp/assets/glance/glance.sql
-mysql --user=root < /tmp/assets/glance/glance.sql 
+ReplVar ADMPWD $ASSETS/glance/glance.sql
+mysql --user=root < $ASSETS/glance/glance.sql 
