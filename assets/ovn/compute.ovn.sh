@@ -5,10 +5,10 @@ apt -y install neutron-common neutron-plugin-ml2 neutron-ovn-metadata-agent ovn-
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var $ASSETS/ovn/compute.neutron.conf
 done
-install -v -b -m 640 -g neutron -T /etc/neutron/neutron.conf     $ASSETS/ovn/compute.neutron.conf
+install -v -b -m 640 -g neutron -T $ASSETS/ovn/compute.neutron.conf     /etc/neutron/neutron.conf
 
 ReplVar NET_HOST_IP $ASSETS/neutron/compute.ml2_conf.ini
-install -v -b -m 640 -g neutron -T /etc/neutron/ml2_conf.ini     $ASSETS/ovn/compute.ml2_conf.ini
+install -v -b -m 640 -g neutron -T $ASSETS/ovn/compute.ml2_conf.ini     /etc/neutron/ml2_conf.ini
 
 PlaceAfter '\[DEFAULT\]' "metadata_proxy_shared_secret = metadata_secret" /etc/neutron/neutron_ovn_metadata_agent.ini
 PlaceAfter '\[DEFAULT\]' "nova_metadata_host = $CTRL_HOST_IP" /etc/neutron/neutron_ovn_metadata_agent.ini

@@ -21,8 +21,8 @@ cp $ASSETS/base/sources.list /etc/apt/sources.list
 # Push system into latest
 apt update  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 apt install -y avahi-daemon libnss-mdns   > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
-apt -y basic  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
-apt -y dist-basic  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
+apt -y upgrade  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
+apt -y dist-upgrade  > >(tee -a /var/log/deployment/os-basic.log) 2> >(tee -a /var/log/deployment/os-basic.err >&2)
 
 # passwordless root access for guests vice versa
 mkdir /root/.ssh

@@ -19,10 +19,10 @@ apt -y install neutron-server neutron-plugin-ml2 python3-neutronclient ovn-centr
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var $ASSETS/ovn/northd.neutron.conf
 done
-install -v -b -m 640 -g neutron   -T /etc/neutron/neutron.conf  $ASSETS/ovn/northd.neutron.conf
+install -v -b -m 640 -g neutron   -T $ASSETS/ovn/northd.neutron.conf  /etc/neutron/neutron.conf
 
 ReplVar NET_HOST_IP $ASSETS/ovn/northd.ml2_conf.ini
-install -v -b -m 640 -g neutron   -T /etc/neutron/ml2_conf.ini  $ASSETS/ovn/northd.ml2_conf.ini
+install -v -b -m 640 -g neutron   -T $ASSETS/ovn/northd.ml2_conf.ini  /etc/neutron/ml2_conf.ini
 
 key=$(echo -e "\"--ovsdb-server-options='--remote=ptcp:6640:127.0.0.1'\"")
 KeySet OVS_CTL_OPTS "${key}" /etc/default/openvswitch-switch

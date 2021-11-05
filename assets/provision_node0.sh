@@ -56,7 +56,7 @@ source $ASSETS/ovn/northd.ovn.sh > >(tee -a /var/log/deployment/ovn.log) 2> >(te
 source $ASSETS/horizon/horizon.sh > >(tee -a /var/log/deployment/horizon.log) 2> >(tee -a /var/log/deployment/horizon.err >&2)
 
 # cinder rollout: api, scheduler
-source $ASSETS/cinder/cinder. > >(tee -a /var/log/deployment/cinder.log) 2> >(tee -a /var/log/deployment/cinder.err >&2)
+source $ASSETS/cinder/cinder.sh > >(tee -a /var/log/deployment/cinder.log) 2> >(tee -a /var/log/deployment/cinder.err >&2)
 
 # heat prepare service
 source $ASSETS/heat/heat-prep.sh > >(tee -a /var/log/deployment/heat.log) 2> >(tee -a /var/log/deployment/heat.err >&2)

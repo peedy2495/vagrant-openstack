@@ -7,9 +7,9 @@ apt -y install neutron-common neutron-plugin-ml2 neutron-linuxbridge-agent
 for var in CTRL_HOST_IP SERVPWD ADMPWD; do
   ReplVar $var $ASSETS/neutron/neutron-l2.conf
 done
-install -v -b -m 640 -g neutron -T /etc/neutron/neutron.conf $ASSETS/neutron/neutron-l2.conf
+install -v -b -m 640 -g neutron -T $ASSETS/neutron/neutron-l2.conf  /etc/neutron/neutron.conf
 
-install -v -b -m 640 -g neutron -t /etc/neutron/plugins/ml2  $ASSETS/neutron/ml2_conf.ini
+install -v -b -m 640 -g neutron -t /etc/neutron/plugins/ml2         $ASSETS/neutron/ml2_conf.ini
 
 ReplVar HOST_IP $ASSETS/neutron/linuxbridge_agent.ini
 KeyDisable physical_interface_mappings $ASSETS/neutron/linuxbridge_agent.ini
