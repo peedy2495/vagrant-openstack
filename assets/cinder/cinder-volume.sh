@@ -25,10 +25,10 @@ fi
 # create default volumegroup for cinder with prepared pvs
 vgcreate cinder-volumes $pvs
 
+apt -y install cinder-volume python3-mysqldb
+
 # wait for cinder api
 WaitForHost $CTRL_HOST_IP 8776 tcp 'cinder-api@'
-
-apt -y install cinder-volume python3-mysqldb
 
 for var in CTRL_HOST_IP HOST_IP ADMPWD SERVPWD GLANCE_IP; do
     ReplVar $var $ASSETS/cinder/cinder.conf

@@ -1,9 +1,9 @@
 #!/bin/bash
 
+apt -y install heat-api heat-api-cfn heat-engine python3-heatclient python3-vitrageclient python3-zunclient 
+
 # wait for nova api
 WaitForHost $CTRL_HOST_IP 5000 tcp 'keystone@'
-
-apt -y install heat-api heat-api-cfn heat-engine python3-heatclient python3-vitrageclient python3-zunclient 
 
 for var in CTRL_HOST_IP HOST_IP ADMPWD SERVPWD; do
     ReplVar $var $ASSETS/heat/heat.conf
