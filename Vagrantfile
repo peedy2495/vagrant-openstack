@@ -34,6 +34,8 @@ Vagrant.configure("2") do |config|
         subconfig.vm.network :private_network, ip: NODE0_REPO_NET_IP
         subconfig.vm.provider "libvirt" do |libvirt|
             libvirt.driver = "kvm"
+            libvirt.cpu_mode = 'host-model'
+            libvirt.cpu_model = 'qemu64'
             libvirt.memory = "16384"
             libvirt.cpus = 4
             libvirt.storage_pool_name = "machines"
@@ -61,6 +63,8 @@ Vagrant.configure("2") do |config|
         subconfig.vm.network :private_network, ip: NODE1_REPO_NET_IP
         subconfig.vm.provider "libvirt" do |libvirt|
             libvirt.driver = "kvm"
+            libvirt.cpu_mode = 'host-model'
+            libvirt.cpu_model = 'qemu64'
             libvirt.memory = "8096"
             libvirt.cpus = 8
             libvirt.storage_pool_name = "machines"
@@ -86,6 +90,8 @@ Vagrant.configure("2") do |config|
         subconfig.vm.network :private_network, ip: NODE2_REPO_NET_IP
         subconfig.vm.provider "libvirt" do |libvirt|
             libvirt.driver = "kvm"
+            libvirt.cpu_mode = 'host-model'
+            libvirt.cpu_model = 'qemu64'
             libvirt.memory = "8096"
             libvirt.cpus = 4
             libvirt.storage_pool_name = "machines"
